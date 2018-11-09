@@ -1,0 +1,16 @@
+{
+  "name": "contract-guardian",
+  "version": "1.0.0",
+  "description": "",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "truffle test"
+  },
+  "author": "gjgd@protonmail.com",
+  "dependencies": {
+    "zeppelin-solidity": "^1.12.0"
+  }
+}
