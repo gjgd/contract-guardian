@@ -25,6 +25,14 @@ contract OwnableWithGuardian is Ownable {
     }
 
     /**
+     * @dev Allows the current owner to nominate a guardian for the contract
+     * @param _guardian The address of the guardian
+     */
+    function setGuardian(address _guardian) external onlyOwner {
+        guardian = _guardian;
+    }
+
+    /**
      * @dev Allows the current guardian to start an ownership recovery procedure
      * This starts a challenge period of length CHALLENGE_PERIOD_LENGTH
      * after which the guardian will be able to call recoverOwnership
@@ -57,14 +65,6 @@ contract OwnableWithGuardian is Ownable {
         endOfChallengePeriod = 0;
         // This method is from the Ownable contract
         _transferOwnership(_newOwner);
-    }
-
-    /**
-     * @dev Allows the current owner to nominate a guardian for the contract
-     * @param _guardian The address of the guardian
-     */
-    function setGuardian(address _guardian) external onlyOwner {
-        guardian = _guardian;
     }
 
     /**
