@@ -11,7 +11,7 @@ contract OwnableWithGuardian is Ownable {
     address public guardian;
 
     // Challenge period's length is roughly one week
-    uint public CHALLENGE_PERIOD_LENGTH = 5760 * 7;
+    uint public challengePeriodLength = 5760 * 7;
     uint public endOfChallengePeriod;
 
     event OwnershipRecoveryInitiated();
@@ -22,6 +22,14 @@ contract OwnableWithGuardian is Ownable {
     modifier onlyGuardian() {
         require(msg.sender == guardian);
         _;
+    }
+
+    /**
+     * @dev Allows the current owner to change the length of the challenge period
+     * @param _challengePeriodLength New length of the challenge period
+     */
+    function setChallengePeriodLength(uint _challengePeriodLength) external onlyOwner {
+        challengePeriodLength = _challengePeriodLength;
     }
 
     /**
@@ -38,7 +46,7 @@ contract OwnableWithGuardian is Ownable {
      * after which the guardian will be able to call recoverOwnership
      */
     function initiateOwnershipRecovery() external onlyGuardian {
-        endOfChallengePeriod = block.number + CHALLENGE_PERIOD_LENGTH;
+        endOfChallengePeriod = block.number + challengePeriodLength;
         emit OwnershipRecoveryInitiated();
     }
 

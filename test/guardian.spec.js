@@ -10,9 +10,27 @@ contract('OwnableWithGuardian', (accounts) => {
   const guardian = accounts[1];
   const newOwner = accounts[2];
   const other = accounts[3];
+  const newChallengePeriodLength = 10;
 
   before(async () => {
     contract = await OwnableWithGuardian.deployed({from: owner});
+  });
+
+  describe('setChallengePeriodLength', () => {
+    it('should fail if not called by the owner', async () => {
+      await assertFail(
+        contract.setChallengePeriodLength(newChallengePeriodLength, {from: other})
+      );
+      await assertFail(
+        contract.setChallengePeriodLength(newChallengePeriodLength, {from: guardian})
+      );
+    });
+
+    it('should set a new length of challenge period', async () => {
+      await contract.setChallengePeriodLength(10, { from: owner });
+      const challengePeriodLength = await contract.challengePeriodLength.call();
+      assert.equal(challengePeriodLength, newChallengePeriodLength);
+    });
   });
 
   describe('setGuardian', () => {
@@ -44,7 +62,7 @@ contract('OwnableWithGuardian', (accounts) => {
     });
 
     it('should set endOfChallengePeriod', async () => {
-      const length = await contract.CHALLENGE_PERIOD_LENGTH.call();
+      const length = await contract.challengePeriodLength.call();
       let value = await contract.endOfChallengePeriod.call();
       assert.equal(0, value);
       await contract.initiateOwnershipRecovery({from: guardian});
@@ -62,6 +80,7 @@ contract('OwnableWithGuardian', (accounts) => {
     beforeEach(async () => {
       contract = await OwnableWithGuardian.new({from: owner});
       await contract.setGuardian(guardian, {from: owner});
+      await contract.setChallengePeriodLength(newChallengePeriodLength, {from: owner});
     });
 
     it('should fail if called before initiateOwnershipRecovery', async () => {
@@ -117,6 +136,7 @@ contract('OwnableWithGuardian', (accounts) => {
     beforeEach(async () => {
       contract = await OwnableWithGuardian.new({from: owner});
       await contract.setGuardian(guardian, {from: owner});
+      await contract.setChallengePeriodLength(newChallengePeriodLength, {from: owner});
       await contract.initiateOwnershipRecovery({from: guardian});
     });
 
