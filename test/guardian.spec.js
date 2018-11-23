@@ -114,12 +114,36 @@ contract('OwnableWithGuardian', (accounts) => {
   });
 
   describe('cancelOwnershipRecovery', () => {
-    it('should fail if not called by the owner', async () => {
+    beforeEach(async () => {
+      contract = await OwnableWithGuardian.new({from: owner});
+      await contract.setGuardian(guardian, {from: owner});
+      await contract.initiateOwnershipRecovery({from: guardian});
+    });
 
+    it('should fail if not called by the owner', async () => {
+      await assertFail(
+        contract.cancelOwnershipRecovery({ from: other })
+      );
+      await assertFail(
+        contract.cancelOwnershipRecovery({ from: guardian })
+      );
     });
 
     it('should reset the challenge period', async () => {
+      let endOfChallengePeriod = await contract.endOfChallengePeriod.call();
+      assert.isAbove(endOfChallengePeriod, web3.eth.blockNumber);
+      await contract.cancelOwnershipRecovery({ from: owner })
+      endOfChallengePeriod = await contract.endOfChallengePeriod.call();
+      assert.equal(endOfChallengePeriod, 0);
+    });
 
+    it('should prevent guardian from calling recoverOwnership', async () => {
+      const endOfChallengePeriod = await contract.endOfChallengePeriod.call();
+      await blockMiner.mineUntilBlock(endOfChallengePeriod - 1);
+      await contract.cancelOwnershipRecovery({ from: owner })
+      await assertFail(
+        contract.recoverOwnership(newOwner, { from: guardian })
+      );
     });
   });
 });
