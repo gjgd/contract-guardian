@@ -1,2 +1,7 @@
 build/
 node_modules/
+coverage.json
+coverage/
+coverageEnv/
+allFiredEvents
+scTopics
