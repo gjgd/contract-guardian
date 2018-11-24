@@ -11,6 +11,9 @@
   },
   "author": "gjgd@protonmail.com",
   "dependencies": {
+    "eslint": "^5.9.0",
+    "eslint-config-google": "^0.11.0",
+    "solidity-coverage": "^0.5.11",
     "zeppelin-solidity": "^1.12.0"
   }
 }
