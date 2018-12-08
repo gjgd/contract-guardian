@@ -2,7 +2,7 @@ const OwnableWithGuardian = artifacts.require('OwnableWithGuardian.sol');
 const {
   assertFail,
   blockMiner,
- } = require('./utils');
+} = require('./utils');
 
 contract('OwnableWithGuardian', (accounts) => {
   let contract;
@@ -19,15 +19,15 @@ contract('OwnableWithGuardian', (accounts) => {
   describe('setChallengePeriodLength', () => {
     it('should fail if not called by the owner', async () => {
       await assertFail(
-        contract.setChallengePeriodLength(newChallengePeriodLength, {from: other})
+          contract.setChallengePeriodLength(newChallengePeriodLength, {from: other})
       );
       await assertFail(
-        contract.setChallengePeriodLength(newChallengePeriodLength, {from: guardian})
+          contract.setChallengePeriodLength(newChallengePeriodLength, {from: guardian})
       );
     });
 
     it('should set a new length of challenge period', async () => {
-      await contract.setChallengePeriodLength(10, { from: owner });
+      await contract.setChallengePeriodLength(10, {from: owner});
       const challengePeriodLength = await contract.challengePeriodLength.call();
       assert.equal(challengePeriodLength, newChallengePeriodLength);
     });
@@ -36,7 +36,7 @@ contract('OwnableWithGuardian', (accounts) => {
   describe('setGuardian', () => {
     it('should fail if not called by the owner', async () => {
       await assertFail(
-        contract.setGuardian(guardian, {from: other})
+          contract.setGuardian(guardian, {from: other})
       );
     });
 
@@ -57,7 +57,7 @@ contract('OwnableWithGuardian', (accounts) => {
 
     it('should fail if not called by the guardian', async () => {
       await assertFail(
-        contract.initiateOwnershipRecovery({from: other})
+          contract.initiateOwnershipRecovery({from: other})
       );
     });
 
@@ -72,7 +72,7 @@ contract('OwnableWithGuardian', (accounts) => {
 
     it('should emit an OwnershipRecoveryInitiated event', async () => {
       const tx = await contract.initiateOwnershipRecovery({from: guardian});
-      assert.equal('OwnershipRecoveryInitiated', tx.logs[0].event)
+      assert.equal('OwnershipRecoveryInitiated', tx.logs[0].event);
     });
   });
 
@@ -85,19 +85,19 @@ contract('OwnableWithGuardian', (accounts) => {
 
     it('should fail if called before initiateOwnershipRecovery', async () => {
       await assertFail(
-        contract.recoverOwnership(newOwner, { from: guardian })
+          contract.recoverOwnership(newOwner, {from: guardian})
       );
     });
 
     it('should fail if called before the end of the challenge period', async () => {
       await contract.initiateOwnershipRecovery({from: guardian});
       await assertFail(
-        contract.recoverOwnership(newOwner, { from: guardian })
+          contract.recoverOwnership(newOwner, {from: guardian})
       );
       const endOfChallengePeriod = await contract.endOfChallengePeriod.call();
       await blockMiner.mineUntilBlock(endOfChallengePeriod - 2);
       await assertFail(
-        contract.recoverOwnership(newOwner, { from: guardian })
+          contract.recoverOwnership(newOwner, {from: guardian})
       );
     });
 
@@ -106,7 +106,7 @@ contract('OwnableWithGuardian', (accounts) => {
       const endOfChallengePeriod = await contract.endOfChallengePeriod.call();
       await blockMiner.mineUntilBlock(endOfChallengePeriod - 1);
       await assertFail(
-        contract.recoverOwnership(newOwner, { from: other })
+          contract.recoverOwnership(newOwner, {from: other})
       );
     });
 
@@ -142,17 +142,17 @@ contract('OwnableWithGuardian', (accounts) => {
 
     it('should fail if not called by the owner', async () => {
       await assertFail(
-        contract.cancelOwnershipRecovery({ from: other })
+          contract.cancelOwnershipRecovery({from: other})
       );
       await assertFail(
-        contract.cancelOwnershipRecovery({ from: guardian })
+          contract.cancelOwnershipRecovery({from: guardian})
       );
     });
 
     it('should reset the challenge period', async () => {
       let endOfChallengePeriod = await contract.endOfChallengePeriod.call();
       assert.isAbove(endOfChallengePeriod, web3.eth.blockNumber);
-      await contract.cancelOwnershipRecovery({ from: owner })
+      await contract.cancelOwnershipRecovery({from: owner});
       endOfChallengePeriod = await contract.endOfChallengePeriod.call();
       assert.equal(endOfChallengePeriod, 0);
     });
@@ -160,9 +160,9 @@ contract('OwnableWithGuardian', (accounts) => {
     it('should prevent guardian from calling recoverOwnership', async () => {
       const endOfChallengePeriod = await contract.endOfChallengePeriod.call();
       await blockMiner.mineUntilBlock(endOfChallengePeriod - 1);
-      await contract.cancelOwnershipRecovery({ from: owner })
+      await contract.cancelOwnershipRecovery({from: owner});
       await assertFail(
-        contract.recoverOwnership(newOwner, { from: guardian })
+          contract.recoverOwnership(newOwner, {from: guardian})
       );
     });
   });
