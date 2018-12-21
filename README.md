@@ -1,4 +1,4 @@
-# Contract Guardian
+# Contract Guardian [![Build Status](https://travis-ci.com/gjgd/contract-guardian.svg?branch=master)](https://travis-ci.com/gjgd/contract-guardian) [![Coverage Status](https://coveralls.io/repos/github/gjgd/contract-guardian/badge.svg?branch=master)](https://coveralls.io/github/gjgd/contract-guardian?branch=master)
 
 This repository is a proof of concept for an alternative way for recovering ownership of a smart contract after the owner lost access to their private keys.
 

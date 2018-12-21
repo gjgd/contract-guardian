@@ -12,10 +12,13 @@
   },
   "author": "gjgd@protonmail.com",
   "dependencies": {
-    "eslint": "^5.9.0",
-    "eslint-config-google": "^0.11.0",
-    "solidity-coverage": "^0.5.11",
     "truffle": "4.1.11",
     "zeppelin-solidity": "^1.12.0"
+  },
+  "devDependencies": {
+    "coveralls": "^3.0.2",
+    "eslint": "^5.9.0",
+    "eslint-config-google": "^0.11.0",
+    "solidity-coverage": "^0.5.11"
   }
 }
