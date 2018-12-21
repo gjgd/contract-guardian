@@ -52,8 +52,5 @@ You only have to trust that your guardian will give ownership to an address you 
 
 Run 
 ```
-npm -g ganache-cli
-ganache-cli
-# In a separate shell:
 npm run test
 ```
