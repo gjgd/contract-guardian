@@ -10,7 +10,7 @@ This repository is a proof of concept for an alternative way for recovering owne
 - Multiple owners: Trust problem
 - Creating a new contract: Not convenient, have to update the reference of the new contract in all client software.
 
-Guardians solve all those problem.
+Guardians solve all those problems:
 
 - Low trust required: A guardian has no power until the owner lose their keys
 - Lightweight: Doesn't increase gas cost of transactions (no proxy contract)
@@ -35,11 +35,11 @@ The solution introduced in this repo is to add another role: the "guardian" who 
 
 ### Why not use a multisig owner
 
-Multisig is expensive, both in terms of on chain computation it requires, and in terms of the number of operations necessary to sign a transaction.
+Multisig is expensive, both in terms of on-chain computation it requires, and of the number of operations necessary to sign a transactions.
 
 ### What if the guardian loses their keys?
 
-It's ok because the owner can nominate another guardian by calling `setGuardian()`. This is what makes the guardian system robust: An owner can nominate a guardian who lost their keys, and a guardian can nominate a . However if both the guardian and the owner lose their keys, then ownership cannot be recovered.  
+It's ok because the owner can nominate another guardian by calling `setGuardian()`. This is what makes the guardian system robust: An owner can nominate a new guardian after the old one lost their keys, and a guardian can nominate a new owner after the old one lost their keys. However if both the guardian and the owner lose their keys, then ownership cannot be recovered.
 
 ### In the case where the owner lost their keys, what keeps the guardian from giving himself, or a malicious third party ownership of the contract?
 
