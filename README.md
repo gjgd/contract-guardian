@@ -47,6 +47,10 @@ Nothing. You should only give guardianship of your contract to a trusted person.
 
 You only have to trust that your guardian will give ownership to an address you have control of when you lost your keys (and when the challenge period is over).
 
+### What happens if an attacker steals my private keys?
+
+If an attacker steals your private keys, you can potentially recover ownership with your guardian, if the attacker forgets to reset the guardian...
+
 
 ## Running the tests
 
